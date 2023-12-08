@@ -1,30 +1,50 @@
-// import { useState } from 'react'
-import './App.css'
-import { RepoProvider } from "./contexts/RepoProvider"
-import ReposList from "./components/ReposList"
-import FavoritesList from "./components/FavoritesList"
-import Search from "./components/Search"
+import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { RepoProvider } from './contexts/RepoProvider';
 
+import ReposPage from './pages/ReposPage';
+import FavoritesPage from './pages/FavoritesPage';
+
+import { AppBar, Toolbar, Typography } from '@mui/material';
 
 function App() {
-
   return (
     <>
       <RepoProvider>
-        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-        <div>
-          <ReposList />
-          </div>
-        <div>
-          <FavoritesList />
-          </div>
-          <div>
-          <Search />
-          </div>
-        </div>        
+        <Router>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1 }}
+              >
+                RSearch
+                <Link to="/">Github Repo Search</Link>
+              </Typography>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1 }}
+              >
+                <Link to="/favorites">Favorites</Link>
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Routes>
+            <Route
+              path="/favorites"
+              element={<FavoritesPage />}
+            />
+            <Route
+              path="/"
+              element={<ReposPage />}
+            />
+          </Routes>
+        </Router>
       </RepoProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

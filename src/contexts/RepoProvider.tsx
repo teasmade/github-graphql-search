@@ -8,7 +8,7 @@ interface RepoProviderProps {
   children: React.ReactNode;
 }
 
-// init query with some example repos
+// default query with some example high-rated repos
 const GET_REPOS = gql`
   query GetTopRepos($searchQuery: String!) {
     search(query: $searchQuery, type: REPOSITORY, first: 50) {
