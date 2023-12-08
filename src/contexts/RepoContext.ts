@@ -8,6 +8,7 @@ type RepoContextType = {
   favorites: Repo[];
   addFavorite: (repo: Repo) => void;
   removeFavorite: (repoId: string) => void;
+  updateRating: (repoId: string, newRating: number) => void;
   loading: boolean;
   error?: unknown;
   data?: {
@@ -17,7 +18,9 @@ type RepoContextType = {
   };
 };
 
-export const RepoContext = createContext<RepoContextType | undefined>(undefined);
+export const RepoContext = createContext<RepoContextType | undefined>(
+  undefined
+);
 
 export const useRepos = (): RepoContextType => {
   const context = useContext(RepoContext);
