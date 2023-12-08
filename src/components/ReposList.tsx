@@ -1,22 +1,27 @@
 import React from 'react';
 import { useRepos } from '../contexts/RepoContext';
+
 const ReposList: React.FC = () => {
-  const { data, loading, error, addFavorite, favorites, searchTerm } = useRepos();
+  const { data, loading, error, addFavorite, favorites, searchTerm } =
+    useRepos();
 
   if (loading) return <p>Loading repositories...</p>;
   if (error) return <p>Error loading repositories: {JSON.stringify(error)}</p>;
 
   const isFavorite = (repoId: string) => {
-    return favorites.some(fav => fav.id === repoId);
+    return favorites.some((fav) => fav.id === repoId);
   };
 
   return (
     <div>
-      <h2>{ searchTerm ? "Search" : "Top Repositories" }</h2>
+      <h2>{searchTerm ? 'Search Results' : 'Get Inspired by Top Repos'}</h2>
       <ul>
         {data?.search.edges.map(({ node }) => (
           <li key={node.id}>
-            <a href={node.url} target="_blank">
+            <a
+              href={node.url}
+              target="_blank"
+            >
               {node.name}
             </a>
             {' - '}
