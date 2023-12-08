@@ -1,11 +1,10 @@
 import React from 'react';
-import { useRepos } from '../contexts/RepoContext'; // Adjust the import path as necessary
-
+import { useRepos } from '../contexts/RepoContext';
 const ReposList: React.FC = () => {
-  const { data, loading, error, addFavorite, favorites } = useRepos();
+  const { data, loading, error, addFavorite, favorites, searchTerm } = useRepos();
 
   if (loading) return <p>Loading repositories...</p>;
-  if (error) return <p>Error loading repositories: {error.message}</p>;
+  if (error) return <p>Error loading repositories: {JSON.stringify(error)}</p>;
 
   const isFavorite = (repoId: string) => {
     return favorites.some(fav => fav.id === repoId);
@@ -13,7 +12,7 @@ const ReposList: React.FC = () => {
 
   return (
     <div>
-      <h2>Top Repositories</h2>
+      <h2>{ searchTerm ? "Search" : "Top Repositories" }</h2>
       <ul>
         {data?.search.edges.map(({ node }) => (
           <li key={node.id}>
