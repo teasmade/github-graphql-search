@@ -3,8 +3,8 @@ import { createContext, useContext } from 'react';
 import { Repo } from '../types';
 
 type RepoContextType = {
-  searchQuery: string;
-  updateSearchQuery: (query: string) => void;
+  searchTerm: string;
+  updateSearchTerm: (query: string) => void;
   favorites: Repo[];
   addFavorite: (repo: Repo) => void;
   removeFavorite: (repoId: string) => void;
