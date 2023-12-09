@@ -10,11 +10,23 @@ import './index.css';
 import client from './apollo';
 import { ApolloProvider } from '@apollo/client';
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    background: {
+      default: '#eaeff1', // Your desired background color
+    },
+  },
+});
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <CssBaseline />
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
