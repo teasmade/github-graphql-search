@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRepos } from '../contexts/RepoContext';
 import { TextField, Box, InputAdornment, IconButton } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 
 const Search: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
-  const { updateSearchTerm } = useRepos();
+  const { searchTerm, updateSearchTerm } = useRepos();
+
+  useEffect(() => {
+    setInputValue(searchTerm);
+  }, [searchTerm]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
