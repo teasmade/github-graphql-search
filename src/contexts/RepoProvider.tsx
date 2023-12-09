@@ -43,10 +43,8 @@ const GET_REPOS = gql`
         }
       }
       pageInfo {
-        # startCursor
         endCursor
         hasNextPage
-        # hasPreviousPage
       }
     }
   }

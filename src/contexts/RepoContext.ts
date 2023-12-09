@@ -16,10 +16,8 @@ type RepoContextType = {
       repositoryCount: number;
       edges: Array<{ cursor: string; node: Repo }>;
       pageInfo: {
-        // startCursor: string;
         endCursor: string;
         hasNextPage: boolean;
-        // hasPreviousPage: boolean;
       };
     };
   };
