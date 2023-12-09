@@ -4,6 +4,7 @@ import { Repo } from '../types';
 type RepoContextType = {
   searchTerm: string;
   updateSearchTerm: (query: string) => void;
+  loadMoreRepos: () => void;
   favorites: Repo[];
   addFavorite: (repo: Repo) => void;
   removeFavorite: (repoId: string) => void;
@@ -15,10 +16,10 @@ type RepoContextType = {
       repositoryCount: number;
       edges: Array<{ cursor: string; node: Repo }>;
       pageInfo: {
-        startCursor: string;
+        // startCursor: string;
         endCursor: string;
         hasNextPage: boolean;
-        hasPreviousPage: boolean;
+        // hasPreviousPage: boolean;
       };
     };
   };

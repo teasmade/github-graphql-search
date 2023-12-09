@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRepos } from '../contexts/RepoContext';
 
 const ReposList: React.FC = () => {
@@ -6,56 +6,59 @@ const ReposList: React.FC = () => {
     data,
     loading,
     error,
+    loadMoreRepos,
     addFavorite,
     favorites,
     searchTerm,
-    pagination,
-    updatePagination,
-    updatePerPage,
   } = useRepos();
 
-  if (loading) return <p>Loading repositories...</p>;
-  if (error) return <p>Error loading repositories: {JSON.stringify(error)}</p>;
+  const observer = useRef<IntersectionObserver>();
+  const lastRepoElementRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (loading || !data) return;
+
+    if (observer.current) observer.current.disconnect();
+
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && data.search.pageInfo.hasNextPage) {
+        loadMoreRepos();
+      }
+    });
+
+    if (lastRepoElementRef.current) {
+      observer.current.observe(lastRepoElementRef.current);
+    }
+
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, [loading, data, loadMoreRepos]);
 
   const isFavorite = (repoId: string) => {
     return favorites.some((fav) => fav.id === repoId);
   };
 
-  const totalItems = data?.search.repositoryCount || 0;
-  const totalPages = Math.ceil(totalItems / pagination.first);
-  const currentPage = pagination.after
-    ? Math.ceil((data?.search.edges.length || 0) / pagination.first)
-    : 1;
-
-  const handleNextPage = () => {
-    const newAfter = data?.search.pageInfo.endCursor;
-    updatePagination(newAfter);
-  };
-
-  const handlePreviousPage = () => {
-    const newAfter = data?.search.pageInfo.startCursor;
-    updatePagination(newAfter);
-  };
-
-  // const handlePreviousPage = () => {
-  //   if (data?.search.pageInfo.hasPreviousPage) {
-  //     updatePagination({ first: 30, after: data.search.pageInfo.startCursor });
-  //   }
-  // };
-
-  const handlePerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newFirst = parseInt(event.target.value, 10);
-    updatePerPage(newFirst);
-  };
+  if (loading) return <p>Loading repositories...</p>;
+  if (error) return <p>Error loading repositories: {JSON.stringify(error)}</p>;
 
   return (
     <div>
       <h2>
-        {searchTerm ? 'Search Results' : 'Get Inspired by Repos ⭐ > 50000'}
+        {searchTerm
+          ? `Search Results - ${searchTerm}`
+          : 'Get Inspired by Repos ⭐ > 50000'}
       </h2>
+      <p>Total Repositories: {data?.search.repositoryCount}</p>
+
       <ul>
-        {data?.search.edges.map(({ node }) => (
-          <li key={node.id}>
+        {data?.search.edges.map(({ node }, index) => (
+          <li
+            key={node.id}
+            ref={
+              index === data.search.edges.length - 1 ? lastRepoElementRef : null
+            }
+          >
             <a
               href={node.url}
               target="_blank"
@@ -64,6 +67,17 @@ const ReposList: React.FC = () => {
             </a>
             {' - '}
             {node.stargazerCount} stars
+            <p>{node.description}</p>
+            <div>
+              {node.repositoryTopics.nodes.map(({ topic }) => (
+                <span key={topic.name}>{topic.name} </span>
+              ))}
+            </div>
+            <div>
+              {node.languages.nodes.map((language) => (
+                <span key={language.name}>{language.name} </span>
+              ))}
+            </div>
             <button
               onClick={() => addFavorite(node)}
               disabled={isFavorite(node.id)}
@@ -73,37 +87,6 @@ const ReposList: React.FC = () => {
           </li>
         ))}
       </ul>
-
-      <p>Total Repositories: {data?.search.repositoryCount}</p>
-      <p>
-        Page {currentPage} of {totalPages}
-      </p>
-      <select
-        onChange={handlePerPageChange}
-        value={pagination.first}
-      >
-        {[10, 20, 30, 40, 50].map((count) => (
-          <option
-            key={count}
-            value={count}
-          >
-            {count} per page
-          </option>
-        ))}
-      </select>
-
-      <button
-        onClick={handlePreviousPage}
-        disabled={!data?.search.pageInfo.hasPreviousPage}
-      >
-        Previous
-      </button>
-      <button
-        onClick={handleNextPage}
-        disabled={!data?.search.pageInfo.hasNextPage}
-      >
-        Next
-      </button>
     </div>
   );
 };
