@@ -1,10 +1,10 @@
 import React from 'react';
 import { useLocation, Link as RouterLink } from 'react-router-dom';
-import { Link } from '@mui/material';
+import { Link, Box } from '@mui/material';
 
 type NavLinkProps = {
   to: string;
-  label: string;
+  label: React.ReactNode;
   isHeader?: boolean;
 };
 
@@ -19,9 +19,15 @@ const NavLink: React.FC<NavLinkProps> = ({ to, label, isHeader = false }) => {
       to={to}
       color="inherit"
       underline={underline}
-      sx={{ marginRight: 2 }}
+      sx={{ marginRight: 3 }}
     >
-      {label}
+      {!isHeader ? (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+          {label}
+        </Box>
+      ) : (
+        label
+      )}
     </Link>
   );
 };

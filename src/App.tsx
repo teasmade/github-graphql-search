@@ -6,6 +6,8 @@ import ReposPage from './pages/ReposPage';
 import FavoritesPage from './pages/FavoritesPage';
 
 import { AppBar, Toolbar, Typography, Container, Paper } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 function App() {
   return (
@@ -27,11 +29,21 @@ function App() {
                 </Typography>
                 <NavLink
                   to="/"
-                  label="Search"
+                  label={
+                    <>
+                      <SearchIcon />
+                      Search
+                    </>
+                  }
                 />
                 <NavLink
                   to="/favorites"
-                  label="Favorites"
+                  label={
+                    <>
+                      <FavoriteIcon />
+                      Favorites
+                    </>
+                  }
                 />
               </Toolbar>
             </Container>
