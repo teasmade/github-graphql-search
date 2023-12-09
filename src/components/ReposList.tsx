@@ -1,11 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import { useRepos } from '../contexts/RepoContext';
 import RepoItem from './RepoItem';
-import { Button } from '@mui/material';
+import { Button, CircularProgress, Box } from '@mui/material';
 
 const ReposList: React.FC = () => {
-  const { data, loading, error, loadMoreRepos, addFavorite, favorites } =
-    useRepos();
+  const {
+    data,
+    loading,
+    loadingMore,
+    error,
+    loadMoreRepos,
+    addFavorite,
+    favorites,
+  } = useRepos();
 
   const observer = useRef<IntersectionObserver>();
   const lastRepoElementRef = useRef<HTMLLIElement>(null);
@@ -34,7 +41,16 @@ const ReposList: React.FC = () => {
     return favorites.some((fav) => fav.id === repoId);
   };
 
-  if (loading) return <p>Loading repositories...</p>;
+  if (loading)
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        my={2}
+      >
+        <CircularProgress />
+      </Box>
+    );
   if (error) return <p>Error loading repositories: {JSON.stringify(error)}</p>;
 
   return (
@@ -60,6 +76,17 @@ const ReposList: React.FC = () => {
           </li>
         ))}
       </ul>
+      <Box
+        display="flex"
+        justifyContent="center"
+        height="100px"
+      >
+        {loadingMore && (
+          <>
+            <CircularProgress />
+          </>
+        )}
+      </Box>
     </div>
   );
 };

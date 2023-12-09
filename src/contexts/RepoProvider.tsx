@@ -4,9 +4,9 @@ import { RepoContext } from './RepoContext';
 import { Repo } from '../types';
 import { useDebounce } from '../utils/useDebounce';
 
-interface RepoProviderProps {
+type RepoProviderProps = {
   children: React.ReactNode;
-}
+};
 
 // default query with some example high-rated repos
 const GET_REPOS = gql`
@@ -63,10 +63,12 @@ export const RepoProvider = ({ children }: RepoProviderProps) => {
     variables: { searchQuery: searchQueryString, first: 25, after: null },
   });
 
-  const loadMoreRepos = () => {
+  const [loadingMore, setLoadingMore] = useState(false);
+  const loadMoreRepos = async () => {
     const currentEndCursor = data?.search.pageInfo.endCursor;
     if (data?.search.pageInfo.hasNextPage) {
-      fetchMore({
+      setLoadingMore(true);
+      await fetchMore({
         variables: {
           after: currentEndCursor,
         },
@@ -84,6 +86,7 @@ export const RepoProvider = ({ children }: RepoProviderProps) => {
           };
         },
       });
+      setLoadingMore(false);
     }
   };
 
@@ -120,6 +123,7 @@ export const RepoProvider = ({ children }: RepoProviderProps) => {
     updateRating,
     loadMoreRepos,
     loading,
+    loadingMore,
     error,
     data,
   };

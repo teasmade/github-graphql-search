@@ -10,6 +10,7 @@ type RepoContextType = {
   removeFavorite: (repoId: string) => void;
   updateRating: (repoId: string, newRating: number) => void;
   loading: boolean;
+  loadingMore: boolean;
   error?: unknown;
   data?: {
     search: {
