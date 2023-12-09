@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useRepos } from '../contexts/RepoContext';
+import RepoItem from './RepoItem';
 
 const ReposList: React.FC = () => {
   const {
@@ -51,7 +52,7 @@ const ReposList: React.FC = () => {
       </h2>
       <p>Total Repositories: {data?.search.repositoryCount}</p>
 
-      <ul>
+      <ul style={{ listStyle: 'none', padding: 0 }}>
         {data?.search.edges.map(({ node }, index) => (
           <li
             key={node.id}
@@ -59,25 +60,7 @@ const ReposList: React.FC = () => {
               index === data.search.edges.length - 1 ? lastRepoElementRef : null
             }
           >
-            <a
-              href={node.url}
-              target="_blank"
-            >
-              {node.name}
-            </a>
-            {' - '}
-            {node.stargazerCount} stars
-            <p>{node.description}</p>
-            <div>
-              {node.repositoryTopics.nodes.map(({ topic }) => (
-                <span key={topic.name}>{topic.name} </span>
-              ))}
-            </div>
-            <div>
-              {node.languages.nodes.map((language) => (
-                <span key={language.name}>{language.name} </span>
-              ))}
-            </div>
+            <RepoItem repo={node} />
             <button
               onClick={() => addFavorite(node)}
               disabled={isFavorite(node.id)}

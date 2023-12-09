@@ -1,10 +1,10 @@
 import React from 'react';
-import FavoritesList from '../components/FavoritesList';
+import FavoriteReposList from '../components/FavoriteReposList';
 
 const FavoritesPage: React.FC = () => {
   return (
     <div>
-      <FavoritesList />
+      <FavoriteReposList />
     </div>
   );
 };
