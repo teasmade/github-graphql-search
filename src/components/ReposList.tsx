@@ -1,17 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { useRepos } from '../contexts/RepoContext';
 import RepoItem from './RepoItem';
+import { Button } from '@mui/material';
 
 const ReposList: React.FC = () => {
-  const {
-    data,
-    loading,
-    error,
-    loadMoreRepos,
-    addFavorite,
-    favorites,
-    searchTerm,
-  } = useRepos();
+  const { data, loading, error, loadMoreRepos, addFavorite, favorites } =
+    useRepos();
 
   const observer = useRef<IntersectionObserver>();
   const lastRepoElementRef = useRef<HTMLLIElement>(null);
@@ -45,13 +39,6 @@ const ReposList: React.FC = () => {
 
   return (
     <div>
-      <h2>
-        {searchTerm
-          ? `Search Results - ${searchTerm}`
-          : 'Get Inspired by Repos ⭐ > 50000'}
-      </h2>
-      <p>Total Repositories: {data?.search.repositoryCount}</p>
-
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {data?.search.edges.map(({ node }, index) => (
           <li
@@ -60,13 +47,16 @@ const ReposList: React.FC = () => {
               index === data.search.edges.length - 1 ? lastRepoElementRef : null
             }
           >
-            <RepoItem repo={node} />
-            <button
-              onClick={() => addFavorite(node)}
-              disabled={isFavorite(node.id)}
-            >
-              {isFavorite(node.id) ? 'In Favorites' : 'Add to Favorites'}
-            </button>
+            <RepoItem repo={node}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => addFavorite(node)}
+                disabled={isFavorite(node.id)}
+              >
+                {isFavorite(node.id) ? '♥ Favorite' : '+ Favorites'}
+              </Button>
+            </RepoItem>
           </li>
         ))}
       </ul>
