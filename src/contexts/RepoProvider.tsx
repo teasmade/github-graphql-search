@@ -10,9 +10,16 @@ interface RepoProviderProps {
 
 // default query with some example high-rated repos
 const GET_REPOS = gql`
-  query GetTopRepos($searchQuery: String!) {
-    search(query: $searchQuery, type: REPOSITORY, first: 50) {
+  query GetTopRepos($searchQuery: String!, $first: Int, $after: String) {
+    search(
+      query: $searchQuery
+      type: REPOSITORY
+      first: $first
+      after: $after
+    ) {
+      repositoryCount
       edges {
+        cursor
         node {
           ... on Repository {
             id
@@ -21,6 +28,12 @@ const GET_REPOS = gql`
             stargazerCount
           }
         }
+      }
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
       }
     }
   }
@@ -31,13 +44,28 @@ export const RepoProvider = ({ children }: RepoProviderProps) => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
-
   const searchQueryString = debouncedSearchTerm
     ? `is:public ${debouncedSearchTerm} sort:stars-desc`
     : 'is:public stars:>50000 sort:stars-desc';
 
+  const [pagination, setPagination] = useState<{
+    first: number;
+    after: string | null;
+  }>({ first: 10, after: null });
+
+  const updatePagination = (newAfter: string | null) => {
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      after: newAfter,
+    }));
+  };
+
+  const updatePerPage = (newFirst: number) => {
+    setPagination({ first: newFirst, after: null });
+  };
+
   const { loading, error, data } = useQuery(GET_REPOS, {
-    variables: { searchQuery: searchQueryString },
+    variables: { searchQuery: searchQueryString, ...pagination },
   });
 
   const updateSearchTerm = (searchTerm: string) => {
@@ -71,6 +99,9 @@ export const RepoProvider = ({ children }: RepoProviderProps) => {
     addFavorite,
     removeFavorite,
     updateRating,
+    pagination,
+    updatePagination,
+    updatePerPage,
     loading,
     error,
     data,

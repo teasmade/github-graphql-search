@@ -12,7 +12,14 @@ type RepoContextType = {
   error?: unknown;
   data?: {
     search: {
-      edges: Array<{ node: Repo }>;
+      repositoryCount: number;
+      edges: Array<{ cursor: string; node: Repo }>;
+      pageInfo: {
+        startCursor: string;
+        endCursor: string;
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+      };
     };
   };
 };
