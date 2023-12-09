@@ -1,46 +1,61 @@
-import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { RepoProvider } from './contexts/RepoProvider';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import { RepoProvider } from './contexts/RepoProvider';
+import NavLink from './components/NavLink';
 import ReposPage from './pages/ReposPage';
 import FavoritesPage from './pages/FavoritesPage';
 
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { AppBar, Toolbar, Typography, Container, Paper } from '@mui/material';
 
 function App() {
   return (
     <>
       <RepoProvider>
         <Router>
-          <AppBar position="static">
-            <Toolbar>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ flexGrow: 1 }}
-              >
-                RSearch
-                <Link to="/">Github Repo Search</Link>
-              </Typography>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ flexGrow: 1 }}
-              >
-                <Link to="/favorites">Favorites</Link>
-              </Typography>
-            </Toolbar>
+          <AppBar position="sticky">
+            <Container maxWidth="md">
+              <Toolbar>
+                <Typography
+                  variant="h5"
+                  sx={{ flexGrow: 1 }}
+                >
+                  <NavLink
+                    to="/"
+                    label="Github Repo Finder"
+                    isHeader
+                  />
+                </Typography>
+                <NavLink
+                  to="/"
+                  label="Search"
+                />
+                <NavLink
+                  to="/favorites"
+                  label="Favorites"
+                />
+              </Toolbar>
+            </Container>
           </AppBar>
-          <Routes>
-            <Route
-              path="/favorites"
-              element={<FavoritesPage />}
-            />
-            <Route
-              path="/"
-              element={<ReposPage />}
-            />
-          </Routes>
+          <Container
+            maxWidth="md"
+            // style={{ marginTop: '3rem' }}
+          >
+            <Paper
+              elevation={3}
+              sx={{ backgroundColor: '#f5f5f5' }}
+            >
+              <Routes>
+                <Route
+                  path="/favorites"
+                  element={<FavoritesPage />}
+                />
+                <Route
+                  path="/"
+                  element={<ReposPage />}
+                />
+              </Routes>
+            </Paper>
+          </Container>
         </Router>
       </RepoProvider>
     </>
