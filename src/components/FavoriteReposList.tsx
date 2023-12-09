@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRepos } from '../contexts/RepoContext';
 import RepoItem from './RepoItem';
+import { Rating, Button } from '@mui/material';
 
 const FavoriteReposList: React.FC = () => {
   const { favorites, removeFavorite, updateRating } = useRepos();
@@ -12,23 +13,25 @@ const FavoriteReposList: React.FC = () => {
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {favorites.map((repo) => (
             <li key={repo.id}>
-              <RepoItem repo={repo} />
-              <div>
-                {[1, 2, 3, 4, 5].map((rating) => (
-                  <button
-                    key={rating}
-                    style={{
-                      fontWeight: repo.rating === rating ? 'bold' : 'normal',
+              <RepoItem repo={repo}>
+                <div>
+                  <Rating
+                    name="rating"
+                    value={repo.rating || 0}
+                    onChange={(_event, newValue) => {
+                      updateRating(repo.id, newValue || 0);
                     }}
-                    onClick={() => updateRating(repo.id, rating)}
+                  />
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => removeFavorite(repo.id)}
+                    style={{ marginLeft: '10px' }}
                   >
-                    {rating}
-                  </button>
-                ))}
-              </div>
-              <button onClick={() => removeFavorite(repo.id)}>
-                Remove from Favorites
-              </button>
+                    - Favorites
+                  </Button>
+                </div>
+              </RepoItem>
             </li>
           ))}
         </ul>
