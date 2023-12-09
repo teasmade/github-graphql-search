@@ -1,7 +1,6 @@
 import React from 'react';
 import { Repo } from '../types';
 import {
-  Container,
   Card,
   CardContent,
   Typography,
@@ -18,7 +17,7 @@ type RepoItemProps = {
 
 const RepoItem: React.FC<RepoItemProps> = ({ repo, children }) => {
   return (
-    <Card sx={{ margin: '2rem 1rem', maxWidth: '100%' }}>
+    <Card sx={{ margin: '2rem 3rem', maxWidth: '100%' }}>
       <CardContent>
         <Grid
           container

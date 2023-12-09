@@ -8,7 +8,6 @@ const FavoriteReposList: React.FC = () => {
 
   return (
     <div>
-      <h2>Favorites</h2>
       {favorites.length > 0 ? (
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {favorites.map((repo) => (
@@ -36,7 +35,7 @@ const FavoriteReposList: React.FC = () => {
           ))}
         </ul>
       ) : (
-        <p>No favorites added yet.</p>
+        ''
       )}
     </div>
   );

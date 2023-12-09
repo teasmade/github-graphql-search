@@ -42,7 +42,7 @@ function App() {
           >
             <Paper
               elevation={3}
-              sx={{ backgroundColor: '#f5f5f5' }}
+              sx={{ backgroundColor: '#f5f5f5', paddingBottom: 1 }}
             >
               <Routes>
                 <Route
