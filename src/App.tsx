@@ -1,35 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import { RepoProvider } from './contexts/RepoProvider';
+import NavLink from './components/NavLink';
+import ReposPage from './pages/ReposPage';
+import FavoritesPage from './pages/FavoritesPage';
+
+import { AppBar, Toolbar, Typography, Container, Paper } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <RepoProvider>
+        <Router>
+          <AppBar position="sticky">
+            <Container maxWidth="md">
+              <Toolbar>
+                <Typography
+                  variant="h5"
+                  sx={{ flexGrow: 1 }}
+                >
+                  <NavLink
+                    to="/"
+                    label="RepoSearch"
+                    isHeader
+                  />
+                </Typography>
+                <NavLink
+                  to="/"
+                  label={
+                    <>
+                      <SearchIcon />
+                      Search
+                    </>
+                  }
+                />
+                <NavLink
+                  to="/favorites"
+                  label={
+                    <>
+                      <FavoriteIcon />
+                      Favorites
+                    </>
+                  }
+                />
+              </Toolbar>
+            </Container>
+          </AppBar>
+          <Container
+            maxWidth="md"
+            // style={{ marginTop: '3rem' }}
+          >
+            <Paper
+              elevation={3}
+              sx={{ backgroundColor: '#f5f5f5', paddingBottom: 1 }}
+            >
+              <Routes>
+                <Route
+                  path="/favorites"
+                  element={<FavoritesPage />}
+                />
+                <Route
+                  path="/"
+                  element={<ReposPage />}
+                />
+              </Routes>
+            </Paper>
+          </Container>
+        </Router>
+      </RepoProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
