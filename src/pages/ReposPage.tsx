@@ -2,16 +2,20 @@ import React from 'react';
 import Search from '../components/Search';
 import ReposList from '../components/ReposList';
 import { useRepos } from '../contexts/RepoContext';
-import { Paper, Typography, Grid } from '@mui/material';
+import { Paper, Typography, Grid, useTheme } from '@mui/material';
 
 const ReposPage: React.FC = () => {
   const { searchTerm, data } = useRepos();
+  const theme = useTheme();
   return (
     <>
       <Paper
         sx={{
           position: 'sticky',
           top: 64,
+          [theme.breakpoints.down('sm')]: {
+            top: 56,
+          },
           zIndex: 1,
           padding: 2,
           boxShadow: '0px 4px 2px -2px rgba(0,0,0,0.2)',

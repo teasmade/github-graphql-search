@@ -23,7 +23,7 @@ function App() {
                 >
                   <NavLink
                     to="/"
-                    label="Github Repo Finder"
+                    label="RepoSearch"
                     isHeader
                   />
                 </Typography>
