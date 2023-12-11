@@ -14,7 +14,7 @@ You can test the app at https://repo-search.teallen.com
 ## Setup
 
 - Clone this repo
-- Install dependencies from the project root `npm install`
+- Install dependencies from the project root: `npm install`
 - You need to generate a GitHub personal access token to use the GitHub GraphQL api
 - You can do this at https://github.com/settings/tokens
 - Use a "classic" token and set its scope to `public_repo`
@@ -31,7 +31,7 @@ You can test the app at https://repo-search.teallen.com
 ### Deployment with Docker Compose
 
 - Add a `.env` file on the project root with the variable `CONTAINERIZED=true`
-- Build and mount the Dockerized app with `sudo docker compose up -d --build repo-search` , access it on `http://localhost:4173/`
+- Build and mount the Dockerized app with `docker compose up -d --build repo-search` , access it on `http://localhost:4173/`
 - The demo app is deployed on an OVH vps (LetsEncrypt for wildcard https on subdomains, Apache reverse proxy to the app container)
 
 ## NextSteps
@@ -43,9 +43,9 @@ You can test the app at https://repo-search.teallen.com
 
 - First time setting up a GraphQL client
 - First time using MaterialUI (Vuetify experience helped, MUI seems more modular and deeply featured)
-- React Router has new options / ways of routing - went with closest to what I knew (recent React has been with Next enforcing routing setup...)
+- React Router has new options / ways of routing - went with closest to what I knew (recent React work has been with Next enforcing routing setup...)
 - Setback with cursor vs. offset based pagination, ui design choices for search... ended up being a really great bit of learning 👍
-- MUI styling is a bit of a mess of built-in and overrides, need more time studying / using the lib within existing project standards to internalise everything
+- MUI styling is a bit of a mix of built-in and overrides, need more time studying / using the lib within existing project standards to internalise everything
 
 ## TODOs:
 
@@ -55,4 +55,5 @@ You can test the app at https://repo-search.teallen.com
 ## TOLearns:
 
 - ReactRouter > HashRouter, MemoryRouter
-- GraphQL API setup, mutations &++
+- GraphQL API setup, mutations, query management, typing &++
+- MaterialUI - design concepts / best practice
